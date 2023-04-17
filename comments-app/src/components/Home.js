@@ -73,10 +73,10 @@ function CommentsSection() {
     setCount(count - 1);
   }
 
-  const [newComment, setNewComment] = useState({ username: " ", content: '', createdAt: '' });
+  const [newComment, setNewComment] = useState({ username: " ", content: '', createdAt: '', replies: [] });
 
   const handleChange = (e) => {
-    setNewComment({ ...newComment, content: e.target.value, username: "AjayVirkar", createdAt: "now" });
+    setNewComment({ ...newComment, content: e.target.value, username: "AjayVirkar", createdAt: "now", replies: [] });
   };
   // console.log("slzjdvnjldz", newComment)
 
@@ -119,29 +119,62 @@ function CommentsSection() {
       <div className='h-[36rem] overflow-y-scroll'>
         {comments.map((comment) => {
           return (
-            <div key={comment.id} className='flex gap-4 w-1/2 mb-8 py-4 bg-white rounded-md mx-auto'>
-              <div className='flex flex-col px-3 m-5 justify-center bg-gray-200 rounded-md'>
-                <div onClick={increament} className='cursor-pointer'>+</div>
-                <div className='font-bold'>{count}</div>
-                <div onClick={decreament} className='cursor-pointer'>-</div>
+            <div>
+              <div key={comment.id} className='flex gap-4 w-1/2 mb-8 py-4 bg-white rounded-md mx-auto'>
+                <div className='flex flex-col px-3 m-5 justify-center bg-gray-200 rounded-md'>
+                  <div onClick={increament} className='cursor-pointer'>+</div>
+                  <div className='font-bold'>{count}</div>
+                  <div onClick={decreament} className='cursor-pointer'>-</div>
+                </div>
+                <div className='p-2'>
+                  <div className='flex justify-end'>
+                    <button onClick={() => handleEditComment(comment.id)}><FiEdit2 /></button>
+                    <button onClick={() => handleDeleteComment(comment.id)}><MdDelete /></button>
+                  </div>
+                  <div className='flex justify-between'>
+                    <div className='flex justify-center items-center'>
+                      <img className='w-10 h-10' src={logo1} alt="logo" />
+                      <p className='mx-2 text-lg font-bold'>{comment.username}</p>
+                      <p className='text-gray-500'>{comment.createdAt}</p>
+                    </div>
+                    <div className='flex flex-row gap-2 items-center'>
+                      <div className='text-xl font-bold text-blue-400 cursor-pointer'><IoArrowUndoSharp /></div>
+                      <div className='text-xl font-bold text-blue-400 cursor-pointer'>Reply</div>
+                    </div>
+                  </div>
+                  <div className='text-start text-gray-500'>{comment.content}</div>
+                </div>
               </div>
-              <div className='p-2'>
-                <div className='flex justify-end'>
-                  <button onClick={() => handleEditComment(comment.id)}><FiEdit2 /></button>
-                  <button onClick={() => handleDeleteComment(comment.id)}><MdDelete /></button>
-                </div>
-                <div className='flex justify-between'>
-                  <div className='flex justify-center items-center'>
-                    <img className='w-10 h-10' src={logo1} alt="logo" />
-                    <p className='mx-2 text-lg font-bold'>{comment.username}</p>
-                    <p className='text-gray-500'>{comment.createdAt}</p>
+              <div>
+                {comment.replies.map((reply) => (
+                  <div key={reply.id} className='pl-12'>
+                    <div className='flex gap-4 w-[48%] mb-4 py-4 bg-white rounded-md mx-auto'>
+                      <div className='flex flex-col px-3 m-5 justify-center bg-gray-200 rounded-md'>
+                        <div onClick={increament} className='cursor-pointer'>+</div>
+                        <div className='font-bold'>{count}</div>
+                        <div onClick={decreament} className='cursor-pointer'>-</div>
+                      </div>
+                      <div className='p-2'>
+                        <div className='flex justify-end'>
+                          <button onClick={() => handleEditComment(comment.id)}><FiEdit2 /></button>
+                          <button onClick={() => handleDeleteComment(comment.id)}><MdDelete /></button>
+                        </div>
+                        <div className='flex justify-between'>
+                          <div className='flex justify-center items-center'>
+                            <img className='w-10 h-10' src={logo1} alt="logo" />
+                            <p className='mx-2 text-lg font-bold'>{reply.username}</p>
+                            <p className='text-gray-500'>{reply.createdAt}</p>
+                          </div>
+                          <div className='flex flex-row gap-2 items-center'>
+                            <div className='text-xl font-bold text-blue-400 cursor-pointer'><IoArrowUndoSharp /></div>
+                            <div className='text-xl font-bold text-blue-400 cursor-pointer'>Reply</div>
+                          </div>
+                        </div>
+                        <div className='text-start text-gray-500'>{reply.content}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div className='flex flex-row gap-2 items-center'>
-                    <div className='text-xl font-bold text-blue-400 cursor-pointer'><IoArrowUndoSharp /></div>
-                    <div className='text-xl font-bold text-blue-400 cursor-pointer'>Reply</div>
-                  </div>
-                </div>
-                <div className='text-start text-gray-500'>{comment.content}</div>
+                ))}
               </div>
             </div>
           )
